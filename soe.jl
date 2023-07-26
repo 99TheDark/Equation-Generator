@@ -28,7 +28,13 @@ function generate_soe(dims::Int64, size::Int64 = 8) # dims within 1 to 26
 			if k >= 0 && i != 1
 				str *= "+"
 			end
-			str *= string(k) * string(letters[length(letters)-dims+i])
+			if k == -1
+				str *= "-"
+			elseif k != 1
+				str *= string(k)
+			end
+
+			str *= string(letters[length(letters)-dims+i])
 		end
 
 		str *= "=" * string(answers[j]) * "\n"
