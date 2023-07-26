@@ -1,13 +1,14 @@
 using LinearAlgebra
 
-r(size::Int64) = convert(Float64, rand(-size:size))
+module SystemOfEquations
+
+export generate_soe
+
 letters = split("abcdefghijklmnopqrstuvwxyz", "")
 
-function generate(dims::Int64, size::Int64 = 8) # dims within 1 to 26
-	range = [collect(-size:-1); collect(1:size)]
-
-	coefficients = rand(range, dims, dims)
-	variables = rand(range, dims)
+function generate_soe(dims::Int64, size::Int64 = 8) # dims within 1 to 26
+	coefficients = rand([collect(-size:-1); collect(1:size)], dims, dims)
+	variables = rand(-size:size, dims)
 	answers::Vector{Int64} = []
 
 	for row in eachrow(coefficients)
@@ -33,7 +34,13 @@ function generate(dims::Int64, size::Int64 = 8) # dims within 1 to 26
 		str *= "=" * string(answers[j]) * "\n"
 	end
 
+	str *= "\n"
+
+	for i in 1:dims
+		str *= string(letters[length(letters)-dims+i]) * "=" * string(variables[i]) * "\n"
+	end
+
 	return str
 end
 
-println(generate(3))
+end
