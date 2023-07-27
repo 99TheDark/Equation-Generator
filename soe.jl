@@ -7,6 +7,15 @@ export generate_soe
 letters = split("abcdefghijklmnopqrstuvwxyz", "")
 
 function generate_soe(dims::Int64, size::Int64 = 8) # dims within 1 to 26
+	function strvar(idx::Int64)::String
+		k = length(letters) - dims + idx
+		if dims <= 2
+			k -= 3 - dims
+		end
+
+		return string(letters[k])
+	end
+
 	coefficients = rand([collect(-size:-1); collect(1:size)], dims, dims)
 	variables = rand(-size:size, dims)
 	answers::Vector{Int64} = []
@@ -34,7 +43,7 @@ function generate_soe(dims::Int64, size::Int64 = 8) # dims within 1 to 26
 				str *= string(k)
 			end
 
-			str *= string(letters[length(letters)-dims+i])
+			str *= strvar(i)
 		end
 
 		str *= "=" * string(answers[j]) * "\n"
@@ -43,7 +52,7 @@ function generate_soe(dims::Int64, size::Int64 = 8) # dims within 1 to 26
 	str *= "\n"
 
 	for i in 1:dims
-		str *= string(letters[length(letters)-dims+i]) * "=" * string(variables[i]) * "\n"
+		str *= strvar(i) * "=" * string(variables[i]) * "\n"
 	end
 
 	return str
